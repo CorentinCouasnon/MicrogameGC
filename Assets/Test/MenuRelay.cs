@@ -58,8 +58,9 @@ public class MenuRelay : MonoBehaviour
             RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
-
             NetworkManager.Singleton.StartHost();
+
+            NetworkManager.Singleton.SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
 
         }
         catch (RelayServiceException e)

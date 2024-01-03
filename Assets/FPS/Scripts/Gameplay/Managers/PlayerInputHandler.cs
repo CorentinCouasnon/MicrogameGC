@@ -1,9 +1,10 @@
 ﻿using Unity.FPS.Game;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Unity.FPS.Gameplay
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : NetworkBehaviour
     {
         [Tooltip("Sensitivity multiplier for moving the camera around")]
         public float LookSensitivity = 1f;
@@ -24,7 +25,7 @@ namespace Unity.FPS.Gameplay
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             m_PlayerCharacterController = GetComponent<PlayerCharacterController>();
             DebugUtility.HandleErrorIfNullGetComponent<PlayerCharacterController, PlayerInputHandler>(
