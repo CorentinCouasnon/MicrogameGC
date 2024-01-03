@@ -35,8 +35,7 @@ namespace Unity.FPS.Game
 
         void Awake()
         {
-            EventManager.AddListener<AllObjectivesCompletedEvent>(OnAllObjectivesCompleted);
-            EventManager.AddListener<PlayerDeathEvent>(OnPlayerDeath);
+            EventManager.AddListener<GameOverEvent>(OnGameOver);
         }
 
         void Start()
@@ -62,8 +61,7 @@ namespace Unity.FPS.Game
             }
         }
 
-        void OnAllObjectivesCompleted(AllObjectivesCompletedEvent evt) => EndGame(true);
-        void OnPlayerDeath(PlayerDeathEvent evt) => EndGame(false);
+        void OnGameOver(GameOverEvent evt) => EndGame(evt.Win);
 
         void EndGame(bool win)
         {
@@ -86,14 +84,6 @@ namespace Unity.FPS.Game
                 audioSource.outputAudioMixerGroup = AudioUtility.GetAudioGroup(AudioUtility.AudioGroups.HUDVictory);
                 audioSource.PlayScheduled(AudioSettings.dspTime + DelayBeforeWinMessage);
 
-                // create a game message
-                //var message = Instantiate(WinGameMessagePrefab).GetComponent<DisplayMessage>();
-                //if (message)
-                //{
-                //    message.delayBeforeShowing = delayBeforeWinMessage;
-                //    message.GetComponent<Transform>().SetAsLastSibling();
-                //}
-
                 DisplayMessageEvent displayMessage = Events.DisplayMessageEvent;
                 displayMessage.Message = WinGameMessage;
                 displayMessage.DelayBeforeDisplay = DelayBeforeWinMessage;
@@ -108,8 +98,7 @@ namespace Unity.FPS.Game
 
         void OnDestroy()
         {
-            EventManager.RemoveListener<AllObjectivesCompletedEvent>(OnAllObjectivesCompleted);
-            EventManager.RemoveListener<PlayerDeathEvent>(OnPlayerDeath);
+            EventManager.RemoveListener<GameOverEvent>(OnGameOver);
         }
     }
 }
