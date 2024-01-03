@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.UI
 {
-    public class WeaponHUDManager : MonoBehaviour
+    public class WeaponHUDManager : NetworkBehaviour
     {
         [Tooltip("UI panel containing the layoutGroup for displaying weapon ammo")]
         public RectTransform AmmoPanel;
@@ -13,15 +14,12 @@ namespace Unity.FPS.UI
         [Tooltip("Prefab for displaying weapon ammo")]
         public GameObject AmmoCounterPrefab;
 
-        PlayerWeaponsManager m_PlayerWeaponsManager;
         List<AmmoCounter> m_AmmoCounters = new List<AmmoCounter>();
 
-        void Start()
-        {
-            m_PlayerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, WeaponHUDManager>(m_PlayerWeaponsManager,
-                this);
+        [SerializeField] PlayerWeaponsManager m_PlayerWeaponsManager;
 
+        public override void OnNetworkSpawn()
+        {
             WeaponController activeWeapon = m_PlayerWeaponsManager.GetActiveWeapon();
             if (activeWeapon)
             {

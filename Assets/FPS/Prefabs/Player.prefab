@@ -1517,6 +1517,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8746678193447392789}
     m_Modifications:
+    - target: {fileID: 319410335075788178, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 319410335075788178, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 319410335075788178, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 319410335075788178, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1228251534716032403, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1547,6 +1567,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -32.190002
       objectReference: {fileID: 0}
+    - target: {fileID: 1281487490479878388, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 814417836257332542}
     - target: {fileID: 1315839542190839937, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1687,6 +1712,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2867850688685924200, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: playerWeaponsManager
+      value: 
+      objectReference: {fileID: 298744117520805562}
+    - target: {fileID: 3235725120890558624, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_PlayerHealth
+      value: 
+      objectReference: {fileID: 1360575517897679518}
+    - target: {fileID: 3235725120890558624, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_GameFlowManager
+      value: 
+      objectReference: {fileID: 8844231742130595807}
+    - target: {fileID: 3235725120890558624, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: playerCharacterController
+      value: 
+      objectReference: {fileID: 814417836257332542}
     - target: {fileID: 3515993507107511360, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1717,6 +1762,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -140.95
       objectReference: {fileID: 0}
+    - target: {fileID: 3853418198751225113, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_WeaponsManager
+      value: 
+      objectReference: {fileID: 298744117520805562}
     - target: {fileID: 5784240987228578635, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1747,6 +1797,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -59.38
       objectReference: {fileID: 0}
+    - target: {fileID: 6715539665687296275, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_PlayerWeaponsManager
+      value: 
+      objectReference: {fileID: 298744117520805562}
     - target: {fileID: 6840976232943533885, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1777,6 +1832,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -86.57
       objectReference: {fileID: 0}
+    - target: {fileID: 6968360555541191443, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_PlayerHealth
+      value: 
+      objectReference: {fileID: 1360575517897679518}
+    - target: {fileID: 6968360555541191443, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: playerCharacterController
+      value: 
+      objectReference: {fileID: 814417836257332542}
     - target: {fileID: 7731603399089928793, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1807,6 +1872,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -113.76
       objectReference: {fileID: 0}
+    - target: {fileID: 8041970915285772882, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041970915285772882, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041970915285772882, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041970915285772882, guid: 4c530358c42589348b9cc9027c20b9e9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8250413824482692630, guid: 4c530358c42589348b9cc9027c20b9e9,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1834,3 +1919,15 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7565986895094562655}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8844231742130595807 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1315839542190839936, guid: 4c530358c42589348b9cc9027c20b9e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 7565986895094562655}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e1fea5cb3ddbc249bd0181e6766db68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

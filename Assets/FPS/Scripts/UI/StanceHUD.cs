@@ -1,11 +1,12 @@
 ﻿using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Unity.FPS.UI
 {
-    public class StanceHUD : MonoBehaviour
+    public class StanceHUD : NetworkBehaviour
     {
         [Tooltip("Image component for the stance sprites")]
         public Image StanceImage;
@@ -16,10 +17,10 @@ namespace Unity.FPS.UI
         [Tooltip("Sprite to display when crouching")]
         public Sprite CrouchingSprite;
 
+        [SerializeField] PlayerCharacterController character;
+
         void Start()
         {
-            PlayerCharacterController character = FindObjectOfType<PlayerCharacterController>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, StanceHUD>(character, this);
             character.OnStanceChanged += OnStanceChanged;
 
             OnStanceChanged(character.IsCrouching);

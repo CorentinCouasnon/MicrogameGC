@@ -1,28 +1,27 @@
 ﻿using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Unity.FPS.UI
 {
-    public class CrosshairManager : MonoBehaviour
+    public class CrosshairManager : NetworkBehaviour
     {
         public Image CrosshairImage;
         public Sprite NullCrosshairSprite;
         public float CrosshairUpdateshrpness = 5f;
 
-        PlayerWeaponsManager m_WeaponsManager;
         bool m_WasPointingAtEnemy;
         RectTransform m_CrosshairRectTransform;
         CrosshairData m_CrosshairDataDefault;
         CrosshairData m_CrosshairDataTarget;
         CrosshairData m_CurrentCrosshair;
 
-        void Start()
-        {
-            m_WeaponsManager = GameObject.FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, CrosshairManager>(m_WeaponsManager, this);
+        [SerializeField] PlayerWeaponsManager m_WeaponsManager;
 
+        public override void OnNetworkSpawn()
+        {
             OnWeaponChanged(m_WeaponsManager.GetActiveWeapon());
 
             m_WeaponsManager.OnSwitchedToWeapon += OnWeaponChanged;
@@ -30,6 +29,8 @@ namespace Unity.FPS.UI
 
         void Update()
         {
+            if (!IsOwner) return;
+
             UpdateCrosshairPointingAtEnemy(false);
             m_WasPointingAtEnemy = m_WeaponsManager.IsPointingAtEnemy;
         }

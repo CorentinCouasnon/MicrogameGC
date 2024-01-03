@@ -1,11 +1,12 @@
 ﻿using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Unity.FPS.UI
 {
-    public class FeedbackFlashHUD : MonoBehaviour
+    public class FeedbackFlashHUD : NetworkBehaviour
     {
         [Header("References")] [Tooltip("Image component of the flash")]
         public Image FlashImage;
@@ -42,22 +43,14 @@ namespace Unity.FPS.UI
 
         bool m_FlashActive;
         float m_LastTimeFlashStarted = Mathf.NegativeInfinity;
-        Health m_PlayerHealth;
-        GameFlowManager m_GameFlowManager;
 
-        void Start()
+        [SerializeField] PlayerCharacterController playerCharacterController;
+        [SerializeField] GameFlowManager m_GameFlowManager;
+        [SerializeField] Health m_PlayerHealth;
+
+        public override void OnNetworkSpawn()
         {
             // Subscribe to player damage events
-            PlayerCharacterController playerCharacterController = FindObjectOfType<PlayerCharacterController>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerCharacterController, FeedbackFlashHUD>(
-                playerCharacterController, this);
-
-            m_PlayerHealth = playerCharacterController.GetComponent<Health>();
-            DebugUtility.HandleErrorIfNullGetComponent<Health, FeedbackFlashHUD>(m_PlayerHealth, this,
-                playerCharacterController.gameObject);
-
-            m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, FeedbackFlashHUD>(m_GameFlowManager, this);
 
             m_PlayerHealth.OnDamaged += OnTakeDamage;
             m_PlayerHealth.OnHealed += OnHealed;
@@ -65,6 +58,8 @@ namespace Unity.FPS.UI
 
         void Update()
         {
+            if (!IsOwner) return;
+
             if (m_PlayerHealth.IsCritical())
             {
                 VignetteCanvasGroup.gameObject.SetActive(true);

@@ -1,10 +1,11 @@
 ﻿using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.UI
 {
-    public class NotificationHUDManager : MonoBehaviour
+    public class NotificationHUDManager : NetworkBehaviour
     {
         [Tooltip("UI panel containing the layoutGroup for displaying notifications")]
         public RectTransform NotificationPanel;
@@ -12,11 +13,10 @@ namespace Unity.FPS.UI
         [Tooltip("Prefab for the notifications")]
         public GameObject NotificationPrefab;
 
+        [SerializeField] PlayerWeaponsManager playerWeaponsManager;
+
         void Awake()
         {
-            PlayerWeaponsManager playerWeaponsManager = FindObjectOfType<PlayerWeaponsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<PlayerWeaponsManager, NotificationHUDManager>(playerWeaponsManager,
-                this);
             playerWeaponsManager.OnAddedWeapon += OnPickupWeapon;
 
             //Jetpack jetpack = FindObjectOfType<Jetpack>();
@@ -55,8 +55,10 @@ namespace Unity.FPS.UI
             }
         }
 
-        void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
+
             EventManager.RemoveListener<ObjectiveUpdateEvent>(OnObjectiveUpdateEvent);
         }
     }

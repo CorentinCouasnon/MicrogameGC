@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using TMPro;
+using Unity.Netcode;
 
 namespace Unity.FPS.UI
 {
-    public class FramerateCounter : MonoBehaviour
+    public class FramerateCounter : NetworkBehaviour
     {
         [Tooltip("Delay between updates of the displayed framerate value")]
         public float PollingTime = 0.5f;
@@ -16,6 +17,8 @@ namespace Unity.FPS.UI
 
         void Update()
         {
+            if (!IsOwner) return;
+
             m_AccumulatedDeltaTime += Time.deltaTime;
             m_AccumulatedFrameCount++;
 
