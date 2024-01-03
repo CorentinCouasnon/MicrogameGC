@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace Unity.FPS.Game
 {
-    public class Damageable : MonoBehaviour
+    public class Damageable : NetworkBehaviour
     {
         [Tooltip("Multiplier to apply to the received damage")]
         public float DamageMultiplier = 1f;

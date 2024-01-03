@@ -14,6 +14,9 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Audio source for footsteps, jump, etc...")]
         public AudioSource AudioSource;
 
+        [Tooltip("Avatar used to see others players ")]
+        public GameObject avatar;
+
         [Header("General")] [Tooltip("Force applied downward when in the air")]
         public float GravityDownForce = 20f;
 
@@ -143,6 +146,13 @@ namespace Unity.FPS.Gameplay
 
         public override void OnNetworkSpawn()
         {
+            avatar.SetActive(false);
+            if (!IsOwner)
+            {
+                PlayerCamera.gameObject.SetActive(false);
+                avatar.SetActive(true);
+            }
+
             // fetch components on the same gameObject
             m_Controller = GetComponent<CharacterController>();
             DebugUtility.HandleErrorIfNullGetComponent<CharacterController, PlayerCharacterController>(m_Controller,

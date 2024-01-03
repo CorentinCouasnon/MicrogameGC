@@ -470,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerCamera: {fileID: 8303093099919959869}
   AudioSource: {fileID: 1272397862697293493}
+  avatar: {fileID: 2648477274499316108}
   GravityDownForce: 20
   GroundCheckLayers:
     serializedVersion: 2
@@ -1484,6 +1485,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 195500116763772367}
+    - targetCorrespondingSourceObject: {fileID: 4416926081852918481, guid: 64dce48905ffd9b4293e595fa6941544,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4209173284744151972}
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
 --- !u!1 &2648477274499316108 stripped
 GameObject:
@@ -1504,9 +1509,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerCharacterController: {fileID: 814417836257332542}
+--- !u!114 &4209173284744151972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2648477274499316108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TransitionStateInfoList: []
+  m_Animator: {fileID: 8749003639012751692}
 --- !u!4 &3425718280009655094 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3893294197879345259, guid: 64dce48905ffd9b4293e595fa6941544,
+    type: 3}
+  m_PrefabInstance: {fileID: 1841227681094021981}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8749003639012751692 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6982812146204527121, guid: 64dce48905ffd9b4293e595fa6941544,
     type: 3}
   m_PrefabInstance: {fileID: 1841227681094021981}
   m_PrefabAsset: {fileID: 0}
@@ -1518,6 +1543,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 806887368}
     m_Modifications:
+    - target: {fileID: 6530784527232116, guid: 7468cd18030a0204ab08baf7ac36ff1e, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6226484437272429138, guid: 7468cd18030a0204ab08baf7ac36ff1e,
         type: 3}
       propertyPath: m_RootOrder

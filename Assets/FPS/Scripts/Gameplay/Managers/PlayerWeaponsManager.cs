@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerWeaponsManager : MonoBehaviour
+    public class PlayerWeaponsManager : NetworkBehaviour
     {
         public enum WeaponSwitchState
         {
@@ -93,7 +94,7 @@ namespace Unity.FPS.Gameplay
         WeaponSwitchState m_WeaponSwitchState;
         int m_WeaponSwitchNewWeaponIndex;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             ActiveWeaponIndex = -1;
             m_WeaponSwitchState = WeaponSwitchState.Down;
@@ -121,6 +122,8 @@ namespace Unity.FPS.Gameplay
 
         void Update()
         {
+            if (!IsOwner) return;
+
             // shoot handling
             WeaponController activeWeapon = GetActiveWeapon();
 
@@ -193,6 +196,8 @@ namespace Unity.FPS.Gameplay
         // Update various animated features in LateUpdate because it needs to override the animated arm position
         void LateUpdate()
         {
+            if (!IsOwner) return;
+
             UpdateWeaponAiming();
             UpdateWeaponBob();
             UpdateWeaponRecoil();

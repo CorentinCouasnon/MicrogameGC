@@ -1,10 +1,11 @@
 ﻿using System;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace FPS.Character.Scripts
 {
-    public class PlayerAnim : MonoBehaviour
+    public class PlayerAnim : NetworkBehaviour
     {
         [Tooltip("The behaviour responsible for movements.")]
         public PlayerCharacterController _playerCharacterController;
@@ -20,7 +21,7 @@ namespace FPS.Character.Scripts
         
         private bool _hasAnimator;
 
-        private void Start()
+        public override void OnNetworkSpawn()
         {
             _hasAnimator = TryGetComponent(out _animator);
 
@@ -29,6 +30,8 @@ namespace FPS.Character.Scripts
 
         private void Update()
         {
+            if (!IsOwner) return;
+
             _hasAnimator = TryGetComponent(out _animator);
 
             JumpAndGravity();

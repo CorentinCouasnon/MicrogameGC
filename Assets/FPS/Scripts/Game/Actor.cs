@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace Unity.FPS.Game
 {
     // This class contains general information describing an actor (player or enemies).
     // It is mostly used for AI detection logic and determining if an actor is friend or foe
-    public class Actor : MonoBehaviour
+    public class Actor : NetworkBehaviour
     {
         [Tooltip("Represents the affiliation (or team) of the actor. Actors of the same affiliation are friendly to each other")]
         public int Affiliation;
@@ -14,7 +15,7 @@ namespace Unity.FPS.Game
 
         ActorsManager m_ActorsManager;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             m_ActorsManager = GameObject.FindObjectOfType<ActorsManager>();
             DebugUtility.HandleErrorIfNullFindObject<ActorsManager, Actor>(m_ActorsManager, this);
@@ -26,8 +27,9 @@ namespace Unity.FPS.Game
             }
         }
 
-        void OnDestroy()
+        public override void OnDestroy()
         {
+            base.OnDestroy();
             // Unregister as an actor
             if (m_ActorsManager)
             {

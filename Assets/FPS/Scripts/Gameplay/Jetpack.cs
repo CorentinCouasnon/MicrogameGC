@@ -1,11 +1,12 @@
 ﻿using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace Unity.FPS.Gameplay
 {
     [RequireComponent(typeof(AudioSource))]
-    public class Jetpack : MonoBehaviour
+    public class Jetpack : NetworkBehaviour
     {
         [Header("References")] [Tooltip("Audio source for jetpack sfx")]
         public AudioSource AudioSource;
@@ -51,7 +52,7 @@ namespace Unity.FPS.Gameplay
 
         public UnityAction<bool> OnUnlockJetpack;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             IsJetpackUnlocked = IsJetpackUnlockedAtStart;
 
@@ -70,6 +71,8 @@ namespace Unity.FPS.Gameplay
 
         void Update()
         {
+            if (!IsOwner) return;
+
             // jetpack can only be used if not grounded and jump has been pressed again once in-air
             if (IsPlayergrounded())
             {

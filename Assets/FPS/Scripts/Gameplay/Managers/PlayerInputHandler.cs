@@ -39,6 +39,8 @@ namespace Unity.FPS.Gameplay
 
         void LateUpdate()
         {
+            if (!IsOwner) return;
+
             m_FireInputWasHeld = GetFireInputHeld();
         }
 
