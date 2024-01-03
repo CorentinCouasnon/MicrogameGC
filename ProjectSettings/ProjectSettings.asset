@@ -948,11 +948,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 2e9014bb-befe-4959-877c-c07b4f2c2406
+  cloudProjectId: 0faf934f-807c-4c29-8922-1ec881edf8a6
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: krantt
+  projectName: MicrogameGC 2024-01-03_11-18-47
+  organizationId: hmarseu
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
