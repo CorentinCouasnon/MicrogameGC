@@ -13,20 +13,20 @@ namespace Unity.FPS.UI
 
         Compass m_Compass;
 
-        void Awake()
-        {
-            m_Compass = FindObjectOfType<Compass>();
-            DebugUtility.HandleErrorIfNullFindObject<Compass, CompassElement>(m_Compass, this);
+        //void Awake()
+        //{
+        //    m_Compass = FindObjectOfType<Compass>();
+        //    DebugUtility.HandleErrorIfNullFindObject<Compass, CompassElement>(m_Compass, this);
 
-            var markerInstance = Instantiate(CompassMarkerPrefab);
+        //    var markerInstance = Instantiate(CompassMarkerPrefab);
 
-            markerInstance.Initialize(this, TextDirection);
-            m_Compass.RegisterCompassElement(transform, markerInstance);
-        }
+        //    markerInstance.Initialize(this, TextDirection);
+        //    m_Compass.RegisterCompassElement(transform, markerInstance);
+        //}
 
-        void OnDestroy()
-        {
-            m_Compass.UnregisterCompassElement(transform);
-        }
+        //void OnDestroy()
+        //{
+        //    m_Compass.UnregisterCompassElement(transform);
+        //}
     }
 }

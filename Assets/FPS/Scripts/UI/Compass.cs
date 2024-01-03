@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using Unity.FPS.Game;
 using Unity.FPS.Gameplay;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.UI
 {
-    public class Compass : MonoBehaviour
+    public class Compass : NetworkBehaviour
     {
         public RectTransform CompasRect;
         public float VisibilityAngle = 180f;
