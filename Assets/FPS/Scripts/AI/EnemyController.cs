@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -7,7 +8,7 @@ using UnityEngine.Events;
 namespace Unity.FPS.AI
 {
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
-    public class EnemyController : MonoBehaviour
+    public class EnemyController : NetworkBehaviour
     {
         [System.Serializable]
         public struct RendererIndexData
@@ -118,7 +119,7 @@ namespace Unity.FPS.AI
         WeaponController[] m_Weapons;
         NavigationModule m_NavigationModule;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             m_EnemyManager = FindObjectOfType<EnemyManager>();
             DebugUtility.HandleErrorIfNullFindObject<EnemyManager, EnemyController>(m_EnemyManager, this);
@@ -357,6 +358,11 @@ namespace Unity.FPS.AI
             }
         }
 
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
         void OnDie()
         {
             // spawn a particle system when dying
@@ -372,8 +378,10 @@ namespace Unity.FPS.AI
                 Instantiate(LootPrefab, transform.position, Quaternion.identity);
             }
 
+            GetComponent<NetworkObject>().Despawn();
             // this will call the OnDestroy function
             Destroy(gameObject, DeathDuration);
+     
         }
 
         void OnDrawGizmosSelected()
