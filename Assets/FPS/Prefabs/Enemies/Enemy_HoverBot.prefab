@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 6449686686394465367}
   - component: {fileID: 797398738606809810}
   - component: {fileID: 1614318205656627459}
+  - component: {fileID: 4180044188003486321}
   m_Layer: 0
   m_Name: Enemy_HoverBot
   m_TagString: Untagged
@@ -129,6 +130,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de939d976a5bb0419ccd8dbd0b6836b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Joueurrandomtest: {fileID: 7253983127304857660, guid: 761cdc9e4e883334cbdcea062d0befa7,
+    type: 3}
   SelfDestructYHeight: -20
   PathReachingRadius: 2
   OrientationSpeed: 10
@@ -237,7 +240,7 @@ MonoBehaviour:
   Health: {fileID: 6370966072896210225}
   HealthBarImage: {fileID: 5299349968446827641}
   HealthBarPivot: {fileID: 3175718064325614203}
-  HideFullHealthBar: 1
+  HideFullHealthBar: 0
 --- !u!195 &7406548990343174644
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -386,6 +389,36 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4180044188003486321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656898269652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  UseQuaternionSynchronization: 0
+  UseQuaternionCompression: 0
+  UseHalfFloatPrecision: 0
+  InLocalSpace: 0
+  Interpolate: 1
+  SlerpPosition: 0
 --- !u!1 &2201913640410082181
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,6 +833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad90ba0b1477764da373f5ec01a8cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objTest: {fileID: 0}
   WeaponName: 
   WeaponIcon: {fileID: 0}
   CrosshairDataDefault:

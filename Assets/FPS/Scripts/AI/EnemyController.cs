@@ -10,6 +10,8 @@ namespace Unity.FPS.AI
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
     public class EnemyController : NetworkBehaviour
     {
+        public GameObject Joueurrandomtest;
+
         [System.Serializable]
         public struct RendererIndexData
         {
@@ -213,8 +215,10 @@ namespace Unity.FPS.AI
             {
                 data.Renderer.SetPropertyBlock(m_BodyFlashMaterialPropertyBlock, data.MaterialIndex);
             }
+            
 
             m_WasDamagedThisFrame = false;
+            
         }
 
         void EnsureIsWithinLevelBounds()

@@ -343,7 +343,7 @@ MonoBehaviour:
   Health: {fileID: 6370966072896210225}
   HealthBarImage: {fileID: 5299349968446827641}
   HealthBarPivot: {fileID: 1695247527468583575}
-  HideFullHealthBar: 1
+  HideFullHealthBar: 0
 --- !u!114 &4234830436940505133
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -728,6 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad90ba0b1477764da373f5ec01a8cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objTest: {fileID: 0}
   WeaponName: mg
   WeaponIcon: {fileID: 0}
   CrosshairDataDefault:
