@@ -38,7 +38,19 @@ public class LobbyCreateUI : MonoBehaviour {
             );
             Hide();
         });
-
+        publicPrivateButton.onClick.AddListener(() =>
+        {
+            switch(isPrivate)
+            {
+                case true:
+                    isPrivate= false; 
+                    break;
+                case false:
+                    isPrivate= true;
+                    break;
+            }
+            UpdateText();
+        });
         gameModeButton.onClick.AddListener(() => {
             switch (gameMode) {
                 default:
@@ -52,6 +64,7 @@ public class LobbyCreateUI : MonoBehaviour {
                     gameMode = LobbyManager.GameMode.PVE;
                     break;
             }
+            //Debug.Log(lobbyName+maxPlayers);
             UpdateText();
         });
 
@@ -59,19 +72,27 @@ public class LobbyCreateUI : MonoBehaviour {
     }
 
     private void UpdateText() {
-        lobbyNameText.text = lobbyName;
+        
         publicPrivateText.text = isPrivate ? "Private" : "Public";
-        maxPlayersText.text = maxPlayers.ToString();
+        
         gameModeText.text = gameMode.ToString();
     }
 
     private void Hide() {
         gameObject.SetActive(false);
     }
-
+    public void OnChangeLobbyName()
+    {
+        lobbyName = lobbyNameText.text;
+    }
+    public void OnChangeNumPlayerMax()
+    {
+        maxPlayers = int.Parse(maxPlayersText.text);
+        
+    }
     public void Show() {
         gameObject.SetActive(true);
-
+        
         lobbyName = "MyLobby";
         isPrivate = false;
         maxPlayers = 4;
