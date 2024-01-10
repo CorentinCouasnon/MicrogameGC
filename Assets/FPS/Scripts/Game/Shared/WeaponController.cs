@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -26,7 +27,7 @@ namespace Unity.FPS.Game
     }
 
     [RequireComponent(typeof(AudioSource))]
-    public class WeaponController : MonoBehaviour
+    public class WeaponController : NetworkBehaviour
     {
         [Header("Information")] [Tooltip("The name that will be displayed in the UI for this weapon")]
         public string WeaponName;
@@ -163,15 +164,18 @@ namespace Unity.FPS.Game
 
         private Queue<Rigidbody> m_PhysicalAmmoPool;
 
-        void Awake()
+        private void Awake()
+        {
+            m_ShootAudioSource = GetComponent<AudioSource>();
+            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_ShootAudioSource, this,
+                gameObject);
+        }
+
+        public override void OnNetworkSpawn()
         {
             m_CurrentAmmo = MaxAmmo;
             m_CarriedPhysicalBullets = HasPhysicalBullets ? ClipSize : 0;
             m_LastMuzzlePosition = WeaponMuzzle.position;
-
-            m_ShootAudioSource = GetComponent<AudioSource>();
-            DebugUtility.HandleErrorIfNullGetComponent<AudioSource, WeaponController>(m_ShootAudioSource, this,
-                gameObject);
 
             if (UseContinuousShootSound)
             {
@@ -236,6 +240,7 @@ namespace Unity.FPS.Game
 
         void Update()
         {
+
             UpdateAmmo();
             UpdateCharge();
             UpdateContinuousShootSound();

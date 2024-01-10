@@ -138,8 +138,8 @@ namespace Unity.FPS.AI
             NavMeshAgent = GetComponent<NavMeshAgent>();
             m_SelfColliders = GetComponentsInChildren<Collider>();
 
-            m_GameFlowManager = FindObjectOfType<GameFlowManager>();
-            DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
+            //m_GameFlowManager = FindObjectOfType<GameFlowManager>();
+            //DebugUtility.HandleErrorIfNullFindObject<GameFlowManager, EnemyController>(m_GameFlowManager, this);
 
             // Subscribe to damage & death actions
             m_Health.OnDie += OnDie;
@@ -414,8 +414,8 @@ namespace Unity.FPS.AI
 
         public bool TryAtack(Vector3 enemyPosition)
         {
-            if (m_GameFlowManager.GameIsEnding)
-                return false;
+            //if (m_GameFlowManager.GameIsEnding)
+            //    return false;
 
             OrientWeaponsTowards(enemyPosition);
 
