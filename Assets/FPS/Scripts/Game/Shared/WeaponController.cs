@@ -29,6 +29,8 @@ namespace Unity.FPS.Game
     [RequireComponent(typeof(AudioSource))]
     public class WeaponController : NetworkBehaviour
     {
+        public GameObject objTest;
+
         [Header("Information")] [Tooltip("The name that will be displayed in the UI for this weapon")]
         public string WeaponName;
 
@@ -240,7 +242,6 @@ namespace Unity.FPS.Game
 
         void Update()
         {
-
             UpdateAmmo();
             UpdateCharge();
             UpdateContinuousShootSound();
@@ -401,6 +402,8 @@ namespace Unity.FPS.Game
                 && m_LastTimeShot + DelayBetweenShots < Time.time)
             {
                 HandleShoot();
+                //HandleShootServerRpc();
+                //HandleShootClientRpc();
                 m_CurrentAmmo -= 1f;
 
                 return true;
@@ -432,6 +435,8 @@ namespace Unity.FPS.Game
             if (IsCharging)
             {
                 HandleShoot();
+                //HandleShootServerRpc();
+                //HandleShootClientRpc();
 
                 CurrentCharge = 0f;
                 IsCharging = false;
@@ -440,6 +445,29 @@ namespace Unity.FPS.Game
             }
 
             return false;
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        void SpawnBulletServerRpc(ServerRpcParams serverRpcParams = default)
+        {
+            Debug.Log("hey");
+            ulong clientId = serverRpcParams.Receive.SenderClientId;
+            if (NetworkManager.ConnectedClients.ContainsKey(clientId))
+            {
+                var client = NetworkManager.ConnectedClients[clientId];
+                GameObject objectTest = Instantiate(objTest, WeaponMuzzle.position, Quaternion.identity);
+                NetworkObject networkObject = objectTest.GetComponent<NetworkObject>();
+
+                networkObject.Spawn(true);
+
+                SpawnBulletClientRpc(networkObject.NetworkObjectId);
+            }
+        }
+
+        [ClientRpc]
+        void SpawnBulletClientRpc(ulong id)
+        {
+            NetworkObject netObj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[id];  
         }
 
         void HandleShoot()
@@ -451,9 +479,127 @@ namespace Unity.FPS.Game
             // spawn all bullets with random direction
             for (int i = 0; i < bulletsPerShotFinal; i++)
             {
+                Debug.Log("befShoot");
+
+                SpawnBulletServerRpc();
+
+                Debug.Log("afterShoot");
+                //Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
+                //ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
+                //    Quaternion.LookRotation(shotDirection));
+                //newProjectile.GetComponent<NetworkObject>().Spawn();
+                //newProjectile.Shoot(this);
+            }
+
+            // muzzle flash
+            if (MuzzleFlashPrefab != null)
+            {
+                GameObject muzzleFlashInstance = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position,
+                    WeaponMuzzle.rotation, WeaponMuzzle.transform);
+                // Unparent the muzzleFlashInstance
+                if (UnparentMuzzleFlash)
+                {
+                    muzzleFlashInstance.transform.SetParent(null);
+                }
+
+                Destroy(muzzleFlashInstance, 2f);
+            }
+
+            if (HasPhysicalBullets)
+            {
+                ShootShell();
+                m_CarriedPhysicalBullets--;
+            }
+
+            m_LastTimeShot = Time.time;
+
+            // play shoot SFX
+            if (ShootSfx && !UseContinuousShootSound)
+            {
+                m_ShootAudioSource.PlayOneShot(ShootSfx);
+            }
+
+            // Trigger attack animation if there is any
+            if (WeaponAnimator)
+            {
+                WeaponAnimator.SetTrigger(k_AnimAttackParameter);
+            }
+
+            OnShoot?.Invoke();
+            OnShootProcessed?.Invoke();
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        void HandleShootServerRpc()
+        {
+            Debug.Log("hey");
+            int bulletsPerShotFinal = ShootType == WeaponShootType.Charge
+                ? Mathf.CeilToInt(CurrentCharge * BulletsPerShot)
+                : BulletsPerShot;
+
+            // spawn all bullets with random direction
+            for (int i = 0; i < bulletsPerShotFinal; i++)
+            {
                 Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
                 ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
                     Quaternion.LookRotation(shotDirection));
+                newProjectile.GetComponent<NetworkObject>().Spawn();
+                newProjectile.Shoot(this);
+            }
+
+            // muzzle flash
+            if (MuzzleFlashPrefab != null)
+            {
+                GameObject muzzleFlashInstance = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position,
+                    WeaponMuzzle.rotation, WeaponMuzzle.transform);
+                // Unparent the muzzleFlashInstance
+                if (UnparentMuzzleFlash)
+                {
+                    muzzleFlashInstance.transform.SetParent(null);
+                }
+
+                Destroy(muzzleFlashInstance, 2f);
+            }
+
+            if (HasPhysicalBullets)
+            {
+                ShootShell();
+                m_CarriedPhysicalBullets--;
+            }
+
+            m_LastTimeShot = Time.time;
+
+            // play shoot SFX
+            if (ShootSfx && !UseContinuousShootSound)
+            {
+                m_ShootAudioSource.PlayOneShot(ShootSfx);
+            }
+
+            // Trigger attack animation if there is any
+            if (WeaponAnimator)
+            {
+                WeaponAnimator.SetTrigger(k_AnimAttackParameter);
+            }
+
+            OnShoot?.Invoke();
+            OnShootProcessed?.Invoke();
+        }
+
+        [ClientRpc]
+        void HandleShootClientRpc()
+        {
+            Debug.Log("hey");
+            int bulletsPerShotFinal = ShootType == WeaponShootType.Charge
+                ? Mathf.CeilToInt(CurrentCharge * BulletsPerShot)
+                : BulletsPerShot;
+
+            // spawn all bullets with random direction
+            for (int i = 0; i < bulletsPerShotFinal; i++)
+            {
+                Vector3 shotDirection = GetShotDirectionWithinSpread(WeaponMuzzle);
+                ProjectileBase newProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position,
+                    Quaternion.LookRotation(shotDirection));
+                newProjectile.GetComponent<NetworkObject>().Spawn();
                 newProjectile.Shoot(this);
             }
 

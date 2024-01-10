@@ -149,7 +149,7 @@ namespace Unity.FPS.Gameplay
             avatar.SetActive(false);
             if (!IsOwner)
             {
-                PlayerCamera.gameObject.SetActive(false);
+                PlayerCamera.enabled = false;
                 avatar.SetActive(true);
             }
 

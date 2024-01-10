@@ -96,6 +96,8 @@ namespace Unity.FPS.Gameplay
 
         public override void OnNetworkSpawn()
         {
+            //if (!IsOwner) return;
+
             ActiveWeaponIndex = -1;
             m_WeaponSwitchState = WeaponSwitchState.Down;
 
@@ -432,6 +434,7 @@ namespace Unity.FPS.Gameplay
         // Adds a weapon to our inventory
         public bool AddWeapon(WeaponController weaponPrefab)
         {
+            Debug.Log("salut");
             // if we already hold this weapon type (a weapon coming from the same source prefab), don't add the weapon
             if (HasWeapon(weaponPrefab) != null)
             {
@@ -446,6 +449,9 @@ namespace Unity.FPS.Gameplay
                 {
                     // spawn the weapon prefab as child of the weapon socket
                     WeaponController weaponInstance = Instantiate(weaponPrefab, WeaponParentSocket);
+
+                    //weaponInstance.gameObject.GetComponent<NetworkObject>().Spawn();
+
                     weaponInstance.transform.localPosition = Vector3.zero;
                     weaponInstance.transform.localRotation = Quaternion.identity;
 
