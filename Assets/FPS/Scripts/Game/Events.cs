@@ -12,6 +12,9 @@ namespace Unity.FPS.Game
         public static AllPlayerDeadEvent AllPlayerDeadEvent = new AllPlayerDeadEvent();
         public static GameOverEvent GameOverEvent = new GameOverEvent();
         public static PlayerDeathEvent PlayerDeathEvent = new PlayerDeathEvent();
+        public static PlayerEnteredCaptureAreaEvent PlayerEnteredCaptureAreaEvent = new PlayerEnteredCaptureAreaEvent();
+        public static PlayerCaptureAreaStayEvent PlayerCaptureAreaStayEvent = new PlayerCaptureAreaStayEvent();
+        public static PlayerExitedCaptureAreaEvent PlayerExitedCaptureAreaEvent = new PlayerExitedCaptureAreaEvent();
         public static EnemyKillEvent EnemyKillEvent = new EnemyKillEvent();
         public static PickupEvent PickupEvent = new PickupEvent();
         public static AmmoPickupEvent AmmoPickupEvent = new AmmoPickupEvent();
@@ -38,6 +41,22 @@ namespace Unity.FPS.Game
     }
 
     public class PlayerDeathEvent : GameEvent { }
+
+    public class PlayerEnteredCaptureAreaEvent : GameEvent
+    {
+        public Actor Actor;
+    }
+
+    public class PlayerExitedCaptureAreaEvent : GameEvent
+    {
+        public Actor Actor;
+    }
+
+    public class PlayerCaptureAreaStayEvent : GameEvent
+    {
+        public Actor Actor;
+        public float DeltaTime;
+    }
 
     public class EnemyKillEvent : GameEvent
     {

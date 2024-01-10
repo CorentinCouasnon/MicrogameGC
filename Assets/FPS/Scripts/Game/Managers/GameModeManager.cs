@@ -27,6 +27,8 @@ namespace FPS.Scripts.Game.Managers
     public enum Mode
     {
         FFA,
+        Control,
+        Teams,
         Coop,
     }
 }

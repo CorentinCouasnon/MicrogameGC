@@ -10,6 +10,9 @@ namespace Unity.FPS.Game
 
         protected virtual void Awake()
         {
+            if (GameModeManager.Instance == null)
+                return;
+            
             if (GameModeManager.Instance.Mode == _mode)
                 SetActiveChildren(true);
         }
