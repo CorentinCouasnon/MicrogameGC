@@ -9,6 +9,7 @@ namespace Unity.FPS.Game
     {
         public static ObjectiveUpdateEvent ObjectiveUpdateEvent = new ObjectiveUpdateEvent();
         public static AllObjectivesCompletedEvent AllObjectivesCompletedEvent = new AllObjectivesCompletedEvent();
+        public static AllPlayerDeadEvent AllPlayerDeadEvent = new AllPlayerDeadEvent();
         public static GameOverEvent GameOverEvent = new GameOverEvent();
         public static PlayerDeathEvent PlayerDeathEvent = new PlayerDeathEvent();
         public static EnemyKillEvent EnemyKillEvent = new EnemyKillEvent();
@@ -28,6 +29,8 @@ namespace Unity.FPS.Game
     }
 
     public class AllObjectivesCompletedEvent : GameEvent { }
+    
+    public class AllPlayerDeadEvent : GameEvent { }
 
     public class GameOverEvent : GameEvent
     {
