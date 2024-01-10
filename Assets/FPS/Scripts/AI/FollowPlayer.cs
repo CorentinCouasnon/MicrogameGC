@@ -1,14 +1,15 @@
 ﻿using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.AI
 {
-    public class FollowPlayer : MonoBehaviour
+    public class FollowPlayer : NetworkBehaviour
     {
         Transform m_PlayerTransform;
         Vector3 m_OriginalOffset;
 
-        void Start()
+        public override void OnNetworkSpawn()
         {
             ActorsManager actorsManager = FindObjectOfType<ActorsManager>();
             if (actorsManager != null)

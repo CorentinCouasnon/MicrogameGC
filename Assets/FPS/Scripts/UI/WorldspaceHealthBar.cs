@@ -1,10 +1,11 @@
 ﻿using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Unity.FPS.UI
 {
-    public class WorldspaceHealthBar : MonoBehaviour
+    public class WorldspaceHealthBar : NetworkBehaviour
     {
         [Tooltip("Health component to track")] public Health Health;
 
