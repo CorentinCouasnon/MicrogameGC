@@ -23,26 +23,28 @@ namespace Unity.FPS.Game
             }
         }
 
-        public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
+        [ClientRpc]
+        public void InflictDamageClientRpc(float damage)
         {
+            Debug.Log("eoh");
             if (Health)
             {
                 var totalDamage = damage;
 
                 // skip the crit multiplier if it's from an explosion
-                if (!isExplosionDamage)
-                {
-                    totalDamage *= DamageMultiplier;
-                }
+                //if (!isExplosionDamage)
+                //{
+                //    totalDamage *= DamageMultiplier;
+                //}
 
-                // potentially reduce damages if inflicted by self
-                if (Health.gameObject == damageSource)
-                {
-                    totalDamage *= SensibilityToSelfdamage;
-                }
+                //// potentially reduce damages if inflicted by self
+                //if (Health.gameObject == damageSource)
+                //{
+                //    totalDamage *= SensibilityToSelfdamage;
+                //}
 
                 // apply the damages
-                Health.TakeDamage(totalDamage, damageSource);
+                Health.TakeDamageClientRpc(totalDamage);
             }
         }
     }
