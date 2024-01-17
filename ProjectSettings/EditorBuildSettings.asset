@@ -11,4 +11,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Team7/MainScene.unity
     guid: 2cc811310965195429867488c21595cc
+  - enabled: 1
+    path: Assets/FPS/Scenes/Corentin_CaptureGameMode.unity
+    guid: 614ca5853e79a8b47a9d198d946b29bc
+  - enabled: 1
+    path: Assets/FPS/Scenes/WinScene.unity
+    guid: 037d06fbede2b4041a843d9ee6fe750c
+  - enabled: 1
+    path: Assets/FPS/Scenes/LoseScene.unity
+    guid: 72e5c65a45893714484002914e3fd521
   m_configObjects: {}

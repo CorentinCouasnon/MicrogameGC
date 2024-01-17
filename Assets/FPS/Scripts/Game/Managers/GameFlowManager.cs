@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Unity.FPS.Game
@@ -30,6 +31,8 @@ namespace Unity.FPS.Game
 
         public bool GameIsEnding { get; private set; }
 
+        Actor actor;
+
         float m_TimeLoadEndGameScene;
         string m_SceneToLoad;
 
@@ -40,6 +43,8 @@ namespace Unity.FPS.Game
 
         void Start()
         {
+            actor = GetComponentInParent<Actor>();
+            Debug.Log(actor);
             AudioUtility.SetMasterVolume(1);
         }
 
@@ -61,9 +66,9 @@ namespace Unity.FPS.Game
             }
         }
 
-        void OnGameOver(GameOverEvent evt) => EndGame(evt.Win);
+        void OnGameOver(GameOverEvent evt) => EndGame(evt.Winners);
 
-        void EndGame(bool win)
+        void EndGame(List<Actor> winners)
         {
             // unlocks the cursor before leaving the scene, to be able to click buttons
             Cursor.lockState = CursorLockMode.None;
@@ -72,7 +77,7 @@ namespace Unity.FPS.Game
             // Remember that we need to load the appropriate end scene after a delay
             GameIsEnding = true;
             EndGameFadeCanvasGroup.gameObject.SetActive(true);
-            if (win)
+            if (winners.Contains(actor))
             {
                 m_SceneToLoad = WinSceneName;
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + DelayBeforeFadeToBlack;
