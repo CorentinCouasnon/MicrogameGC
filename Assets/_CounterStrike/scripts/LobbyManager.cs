@@ -46,7 +46,8 @@ public class LobbyManager : MonoBehaviour {
     public enum GameMode {
         PVE,
         Conquest,
-        TeamDeathMatch
+        TeamDeathMatch,
+        FreeForAll,
     }
 
     public enum PlayerCharacter {
@@ -55,7 +56,13 @@ public class LobbyManager : MonoBehaviour {
         Zombie
     }
 
-
+    Dictionary<GameMode, string> GameModeSceneNames = new Dictionary<GameMode, string>
+    {
+        { GameMode.PVE, "MainScene" },
+        { GameMode.Conquest, "Corentin_CaptureGameMode" },
+        { GameMode.TeamDeathMatch, "MainScene" },
+        { GameMode.FreeForAll, "MainScene" },
+    };
 
     private float heartbeatTimer;
     private float lobbyPollTimer;
@@ -179,15 +186,17 @@ public class LobbyManager : MonoBehaviour {
                 Enum.Parse<GameMode>(joinedLobby.Data[KEY_GAME_MODE].Value);
             
             switch (gameMode) {
-                default:
                 case GameMode.PVE:
                     gameMode = GameMode.Conquest;
                     break;
                 case GameMode.Conquest:
-                    gameMode = GameMode.PVE;
+                    gameMode = GameMode.TeamDeathMatch;
                     break;
                 case GameMode.TeamDeathMatch:
-                    gameMode = GameMode.TeamDeathMatch;
+                    gameMode = GameMode.FreeForAll;
+                    break;
+                case GameMode.FreeForAll:
+                    gameMode = GameMode.PVE;
                     break;
             }
 
@@ -390,7 +399,9 @@ public class LobbyManager : MonoBehaviour {
                     }
                 });
                 joinedLobby = lobby;
-                NetworkManager.Singleton.SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
+
+                Enum.TryParse(lobby.Data[KEY_GAME_MODE].Value, out GameMode mode);
+                NetworkManager.Singleton.SceneManager.LoadScene(GameModeSceneNames[mode], LoadSceneMode.Single);
             }
             catch (LobbyServiceException e)
             {
