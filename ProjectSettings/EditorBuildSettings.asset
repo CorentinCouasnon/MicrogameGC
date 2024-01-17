@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Test/Relay.unity
+    guid: 7db046b5f3e855b458097d55cb84d6f9
+  - enabled: 0
     path: Assets/_Team7/Menu.unity
     guid: a26854944e2028f4f88e7ddbda681fff
   - enabled: 1

@@ -14,7 +14,7 @@ namespace Unity.FPS.Game
         public UnityAction<float, GameObject> OnDamaged;
         public UnityAction<float> OnHealed;
         public UnityAction OnDie;
-
+        
         public float CurrentHealth { get; set; }
         public bool Invincible { get; set; }
         public bool CanPickup() => CurrentHealth < MaxHealth;
@@ -27,8 +27,9 @@ namespace Unity.FPS.Game
         public override void OnNetworkSpawn()
         {
             CurrentHealth = MaxHealth;
+           
         }
-
+        
         public void Heal(float healAmount)
         {
             float healthBefore = CurrentHealth;

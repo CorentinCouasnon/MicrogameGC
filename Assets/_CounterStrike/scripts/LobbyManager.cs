@@ -1,11 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Unity.Netcode;
+using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
+using Unity.Services.Relay;
+using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : MonoBehaviour {
 
@@ -16,6 +23,7 @@ public class LobbyManager : MonoBehaviour {
     public const string KEY_PLAYER_NAME = "PlayerName";
     public const string KEY_PLAYER_CHARACTER = "Character";
     public const string KEY_GAME_MODE = "GameMode";
+    public const string KEY_START_GAME = "start";
 
 
 
@@ -127,6 +135,13 @@ public class LobbyManager : MonoBehaviour {
 
                     joinedLobby = null;
                 }
+                if (joinedLobby.Data[KEY_START_GAME].Value!="0")
+                {
+                    if (!IsLobbyHost())
+                    {
+                        JoinRelay(joinedLobby.Data[KEY_START_GAME].Value);
+                    }
+                }
             }
         }
     }
@@ -162,7 +177,7 @@ public class LobbyManager : MonoBehaviour {
         if (IsLobbyHost()) {
             GameMode gameMode =
                 Enum.Parse<GameMode>(joinedLobby.Data[KEY_GAME_MODE].Value);
-
+            
             switch (gameMode) {
                 default:
                 case GameMode.PVE:
@@ -187,7 +202,8 @@ public class LobbyManager : MonoBehaviour {
             Player = player,
             IsPrivate = isPrivate,
             Data = new Dictionary<string, DataObject> {
-                { KEY_GAME_MODE, new DataObject(DataObject.VisibilityOptions.Public, gameMode.ToString()) }
+                { KEY_GAME_MODE, new DataObject(DataObject.VisibilityOptions.Public, gameMode.ToString()) },
+                {KEY_START_GAME,new DataObject(DataObject.VisibilityOptions.Member,"0") }
             }
         };
 
@@ -356,5 +372,71 @@ public class LobbyManager : MonoBehaviour {
             Debug.Log(e);
         }
     }
+    public async void StartGame()
+    {
+        if (IsLobbyHost())
+        {
+            try
+            {
+                Debug.Log("On lance le massacre");
 
+                string relayCode = await CreateRelay();
+
+                Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject>
+                    {
+                        {KEY_START_GAME,new DataObject(DataObject.VisibilityOptions.Member,relayCode) }
+                    }
+                });
+                joinedLobby = lobby;
+                NetworkManager.Singleton.SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+                
+            }
+        }
+    }
+    public async Task<string> CreateRelay()
+    {
+        try
+        {
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(3);
+            string joincode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+            Debug.Log("code :"+joincode);
+            RelayServerData relayServerData = new RelayServerData(allocation, "dtls");
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+            NetworkManager.Singleton.StartHost();
+
+            return joincode;
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.Log(e);
+            return null;
+            
+        }
+    }
+    private async void JoinRelay(string joinCode)
+    {
+        try
+        {
+            PlayerPrefs.SetString("Code", joinCode);
+
+            Debug.Log("Try to join relay with code " + joinCode);
+            JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
+
+            RelayServerData relayServerData = new RelayServerData(joinAllocation, "dtls");
+
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+
+            NetworkManager.Singleton.StartClient();
+        }
+        catch (RelayServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
 }

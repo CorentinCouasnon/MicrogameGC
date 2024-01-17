@@ -96,6 +96,8 @@ namespace Unity.FPS.Gameplay
 
         public override void OnNetworkSpawn()
         {
+            //if (!IsOwner) return;
+
             ActiveWeaponIndex = -1;
             m_WeaponSwitchState = WeaponSwitchState.Down;
 
@@ -112,10 +114,10 @@ namespace Unity.FPS.Gameplay
             OnSwitchedToWeapon += OnWeaponSwitched;
 
             // Add starting weapons
-            foreach (var weapon in StartingWeapons)
-            {
-                AddWeapon(weapon);
-            }
+            //foreach (var weapon in StartingWeapons)
+            //{
+            //    AddWeapon(weapon);
+            //}
 
             SwitchWeapon(true);
         }
@@ -446,6 +448,9 @@ namespace Unity.FPS.Gameplay
                 {
                     // spawn the weapon prefab as child of the weapon socket
                     WeaponController weaponInstance = Instantiate(weaponPrefab, WeaponParentSocket);
+
+                    //weaponInstance.gameObject.GetComponent<NetworkObject>().Spawn();
+
                     weaponInstance.transform.localPosition = Vector3.zero;
                     weaponInstance.transform.localRotation = Quaternion.identity;
 

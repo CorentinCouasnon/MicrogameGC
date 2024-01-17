@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Unity.FPS.Game;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.Gameplay
@@ -34,7 +36,7 @@ namespace Unity.FPS.Gameplay
         public LayerMask HittableLayers = -1;
 
         [Header("Movement")] [Tooltip("Speed of the projectile")]
-        public float Speed = 20f;
+        public float Speed = 0.5f;
 
         [Tooltip("Downward acceleration from gravity")]
         public float GravityDownAcceleration = 0f;
@@ -74,7 +76,8 @@ namespace Unity.FPS.Gameplay
 
             m_ProjectileBase.OnShoot += OnShoot;
 
-            Destroy(gameObject, MaxLifeTime);
+            NetworkManager.Destroy(gameObject, MaxLifeTime);
+            //Destroy(gameObject, MaxLifeTime);
         }
 
         new void OnShoot()
@@ -233,8 +236,14 @@ namespace Unity.FPS.Gameplay
             {
                 // point damage
                 Damageable damageable = collider.GetComponent<Damageable>();
+
                 if (damageable)
                 {
+                    ////Don't touch the player
+                    //if (collider.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
+                    //{
+                    //    if (networkObject.IsOwner) return;
+                    //}
                     damageable.InflictDamage(Damage, false, m_ProjectileBase.Owner);
                 }
             }
@@ -246,7 +255,8 @@ namespace Unity.FPS.Gameplay
                     Quaternion.LookRotation(normal));
                 if (ImpactVfxLifetime > 0)
                 {
-                    Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
+                    NetworkManager.Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
+                    //Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
                 }
             }
 
@@ -257,7 +267,14 @@ namespace Unity.FPS.Gameplay
             }
 
             // Self Destruct
-            Destroy(this.gameObject);
+            DestroyServerRpc();
+            //Destroy(this.gameObject);
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void DestroyServerRpc()
+        {
+            GetComponent<NetworkObject>().Despawn();
         }
 
         void OnDrawGizmosSelected()

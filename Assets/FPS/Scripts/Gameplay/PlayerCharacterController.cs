@@ -149,8 +149,13 @@ namespace Unity.FPS.Gameplay
             avatar.SetActive(false);
             if (!IsOwner)
             {
-                PlayerCamera.gameObject.SetActive(false);
+                PlayerCamera.enabled = false;
                 avatar.SetActive(true);
+                gameObject.layer = 14;
+            }
+            else
+            {
+                gameObject.layer = 13;
             }
 
             // fetch components on the same gameObject

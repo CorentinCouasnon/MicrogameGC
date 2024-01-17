@@ -16,7 +16,7 @@ namespace Unity.FPS.UI
         public Transform HealthBarPivot;
 
         [Tooltip("Whether the health bar is visible when at full health or not")]
-        public bool HideFullHealthBar = true;
+        public bool HideFullHealthBar = false;
 
         void Update()
         {
