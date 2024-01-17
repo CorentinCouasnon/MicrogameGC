@@ -6,23 +6,23 @@ namespace Unity.FPS.AI
 {
     public class EnemyManager : MonoBehaviour
     {
-        public List<EnemyController> Enemies { get; private set; }
+        public List<GameObject> Enemies { get; private set; }
         public int NumberOfEnemiesTotal { get; private set; }
         public int NumberOfEnemiesRemaining => Enemies.Count;
 
         void Awake()
         {
-            Enemies = new List<EnemyController>();
+            Enemies = new List<GameObject>();
         }
 
-        public void RegisterEnemy(EnemyController enemy)
+        public void RegisterEnemy(GameObject enemy)
         {
             Enemies.Add(enemy);
 
             NumberOfEnemiesTotal++;
         }
 
-        public void UnregisterEnemy(EnemyController enemyKilled)
+        public void UnregisterEnemy(GameObject enemyKilled)
         {
             int enemiesRemainingNotification = NumberOfEnemiesRemaining - 1;
 

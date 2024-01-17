@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Unity.FPS.AI
 {
-    [RequireComponent(typeof(EnemyController))]
+    //[RequireComponent(typeof(EnemyController))]
     public class EnemyMobile : MonoBehaviour
     {
         public enum AIState
