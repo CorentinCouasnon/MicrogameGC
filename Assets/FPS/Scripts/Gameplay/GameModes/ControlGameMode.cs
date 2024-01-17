@@ -54,7 +54,9 @@ namespace FPS.Scripts.Gameplay.GameModes
 
         void OnTimeOver()
         {
-            EndGameClientRpc(new List<Actor>()); // Fix this to see which team has the most points
+            var max = _affiliationsData.Max(affiliation => affiliation.Points);
+            var winner = _affiliationsData.First(affiliation => affiliation.Points == max);
+            EndGameClientRpc(winner.Affiliation);
         }
 
         void OnPlayerEnteredCaptureArea(PlayerEnteredCaptureAreaEvent evt)

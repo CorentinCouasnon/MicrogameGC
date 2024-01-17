@@ -38,7 +38,7 @@ namespace Unity.FPS.Game
 
     public class GameOverEvent : GameEvent
     {
-        public List<Actor> Winners;
+        public int WinnerAffiliation;
     }
 
     public class PlayerDeathEvent : GameEvent { }
