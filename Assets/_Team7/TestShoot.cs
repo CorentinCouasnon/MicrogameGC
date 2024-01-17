@@ -11,11 +11,14 @@ public class TestShoot : NetworkBehaviour
     [SerializeField] GameObject weapon;
     [SerializeField] GameObject weaponShootPoint;
 
+    AudioSource audioSource;
+    public AudioClip shootSfx;
+
 
 
     public override void OnNetworkSpawn()
     {
-
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -24,6 +27,7 @@ public class TestShoot : NetworkBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
+            playSoundServerRpc();
             SpawnBulletServerRpc();
         }
         weapon.transform.forward = cameraGO.transform.forward;
@@ -35,5 +39,17 @@ public class TestShoot : NetworkBehaviour
         Vector3 newPosTest = new Vector3(weaponShootPoint.transform.position.x, weaponShootPoint.transform.position.y, weaponShootPoint.transform.position.z);
         GameObject newProjectileTest = Instantiate(objTest, newPosTest, weapon.transform.rotation);
         newProjectileTest.GetComponent<NetworkObject>().Spawn();
+    }
+
+    [ServerRpc]
+    void playSoundServerRpc()
+    {
+        playSoundClientRpc();
+    }
+
+    [ClientRpc]
+    void playSoundClientRpc()
+    {
+        audioSource.PlayOneShot(shootSfx);
     }
 }
