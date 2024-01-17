@@ -31,11 +31,13 @@ public class LobbyCreateUI : MonoBehaviour {
 
         createButton.onClick.AddListener(() => {
             LobbyManager.Instance.CreateLobby(
+              
                 lobbyName,
                 maxPlayers,
                 isPrivate,
                 gameMode
             );
+            
             Hide();
         });
         publicPrivateButton.onClick.AddListener(() =>
@@ -87,7 +89,19 @@ public class LobbyCreateUI : MonoBehaviour {
     }
     public void OnChangeNumPlayerMax()
     {
-        maxPlayers = int.Parse(maxPlayersText.text);
+        
+        string temp = maxPlayersText.text.Trim();
+        temp = temp.Substring(0, temp.Length - 1);
+
+        if (int.TryParse(temp, out int tempmax))
+        {
+            maxPlayers = tempmax;
+
+        }
+        else
+        {
+            maxPlayers = 5;
+        }
         
     }
     public void Show() {

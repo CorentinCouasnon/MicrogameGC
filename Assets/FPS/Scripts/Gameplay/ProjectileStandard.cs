@@ -34,7 +34,7 @@ namespace Unity.FPS.Gameplay
         public LayerMask HittableLayers = -1;
 
         [Header("Movement")] [Tooltip("Speed of the projectile")]
-        public float Speed = 20f;
+        public float Speed = 0.5f;
 
         [Tooltip("Downward acceleration from gravity")]
         public float GravityDownAcceleration = 0f;

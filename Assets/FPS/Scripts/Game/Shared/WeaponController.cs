@@ -402,8 +402,7 @@ namespace Unity.FPS.Game
                 && m_LastTimeShot + DelayBetweenShots < Time.time)
             {
                 HandleShoot();
-                //HandleShootServerRpc();
-                //HandleShootClientRpc();
+             
                 m_CurrentAmmo -= 1f;
 
                 return true;
@@ -435,8 +434,7 @@ namespace Unity.FPS.Game
             if (IsCharging)
             {
                 HandleShoot();
-                //HandleShootServerRpc();
-                //HandleShootClientRpc();
+               
 
                 CurrentCharge = 0f;
                 IsCharging = false;
@@ -450,25 +448,24 @@ namespace Unity.FPS.Game
         [ServerRpc(RequireOwnership = false)]
         void SpawnBulletServerRpc(ServerRpcParams serverRpcParams = default)
         {
-            Debug.Log("hey");
+            
             ulong clientId = serverRpcParams.Receive.SenderClientId;
             if (NetworkManager.ConnectedClients.ContainsKey(clientId))
             {
                 var client = NetworkManager.ConnectedClients[clientId];
-                GameObject objectTest = Instantiate(objTest, WeaponMuzzle.position, Quaternion.identity);
+                GameObject objectTest = Instantiate(objTest, WeaponMuzzle.position, transform.rotation);
+                
                 NetworkObject networkObject = objectTest.GetComponent<NetworkObject>();
+                if (networkObject!=null)
+                {
+                    networkObject.Spawn(true);
+                    
+                }
 
-                networkObject.Spawn(true);
-
-                SpawnBulletClientRpc(networkObject.NetworkObjectId);
+             
             }
         }
 
-        [ClientRpc]
-        void SpawnBulletClientRpc(ulong id)
-        {
-            NetworkObject netObj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[id];  
-        }
 
         void HandleShoot()
         {
