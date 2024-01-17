@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 4244285901
+  GlobalObjectIdHash: 3898818510
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -844,7 +844,7 @@ MonoBehaviour:
   cameraGO: {fileID: 7442781921941657531}
   weapon: {fileID: 3816401820315442034}
   weaponShootPoint: {fileID: 6497529852765830174}
-  forceShoot: 500
+  forceShoot: 2000
 --- !u!1 &7383874627095517793
 GameObject:
   m_ObjectHideFlags: 0

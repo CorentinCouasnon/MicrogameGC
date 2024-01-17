@@ -11,7 +11,7 @@ public class TestShoot : NetworkBehaviour
     [SerializeField] GameObject weapon;
     [SerializeField] GameObject weaponShootPoint;
 
-    [SerializeField] float forceShoot = 200;
+
 
     public override void OnNetworkSpawn()
     {
@@ -35,6 +35,5 @@ public class TestShoot : NetworkBehaviour
         Vector3 newPosTest = new Vector3(weaponShootPoint.transform.position.x, weaponShootPoint.transform.position.y, weaponShootPoint.transform.position.z);
         GameObject newProjectileTest = Instantiate(objTest, newPosTest, weapon.transform.rotation);
         newProjectileTest.GetComponent<NetworkObject>().Spawn();
-        newProjectileTest.GetComponent<Rigidbody>().AddForce(forceShoot * weapon.transform.forward);
     }
 }

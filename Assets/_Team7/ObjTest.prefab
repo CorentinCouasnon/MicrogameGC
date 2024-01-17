@@ -91,7 +91,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!114 &4942034364117227813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 20
+  vfx: {fileID: 7655095426451682942, guid: 4d48b487f11e62940a978c7c0c0cbcb4, type: 3}
+  forceShoot: 2000
 --- !u!1 &6281592334126480310
 GameObject:
   m_ObjectHideFlags: 0
