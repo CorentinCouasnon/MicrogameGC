@@ -7,15 +7,15 @@ public class TestShoot : NetworkBehaviour
     [SerializeField] GameObject objTest;
     public ProjectileBase ProjectilePrefab;
 
-    GameObject cameraGO;
-    GameObject weapon;
+    [SerializeField] GameObject cameraGO;
+    [SerializeField] GameObject weapon;
+    [SerializeField] GameObject weaponShootPoint;
 
     [SerializeField] float forceShoot = 200;
 
     public override void OnNetworkSpawn()
     {
-        cameraGO = transform.Find("Main Camera").gameObject;
-        weapon = cameraGO.transform.Find("Weapon_Blaster").gameObject;   
+
     }
 
     void Update()
@@ -26,16 +26,15 @@ public class TestShoot : NetworkBehaviour
         {
             SpawnBulletServerRpc();
         }
+        weapon.transform.forward = cameraGO.transform.forward;
     }
 
     [ServerRpc(RequireOwnership = false)]
     void SpawnBulletServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        Vector3 newPosTest = new Vector3(weapon.gameObject.transform.position.x, weapon.gameObject.transform.position.y, weapon.gameObject.transform.position.z);
-        GameObject newProjectileTest = Instantiate(objTest
-                                                    , newPosTest
-                                                   , cameraGO.transform.rotation);
+        Vector3 newPosTest = new Vector3(weaponShootPoint.transform.position.x, weaponShootPoint.transform.position.y, weaponShootPoint.transform.position.z);
+        GameObject newProjectileTest = Instantiate(objTest, newPosTest, weapon.transform.rotation);
         newProjectileTest.GetComponent<NetworkObject>().Spawn();
-        newProjectileTest.GetComponent<Rigidbody>().AddForce(forceShoot * cameraGO.transform.forward);
+        newProjectileTest.GetComponent<Rigidbody>().AddForce(forceShoot * weapon.transform.forward);
     }
 }
