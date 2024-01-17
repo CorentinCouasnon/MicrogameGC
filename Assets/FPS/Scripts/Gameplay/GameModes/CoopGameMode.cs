@@ -32,12 +32,12 @@ namespace FPS.Scripts.Gameplay.GameModes
             // reset objectives
             //return;
             
-            EndGameClientRpc(new List<Actor>());
+            EndGameClientRpc(-1);
         }
 
         void OnAllPlayerDead(AllPlayerDeadEvent evt)
         {
-            EndGameClientRpc(new List<Actor>());
+            EndGameClientRpc(-1);
         }
     }
 }
