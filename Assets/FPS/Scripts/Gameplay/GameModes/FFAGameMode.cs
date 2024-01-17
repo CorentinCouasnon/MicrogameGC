@@ -23,12 +23,12 @@ namespace FPS.Scripts.Gameplay.GameModes
         {
             base.OnAllObjectivesCompleted(evt);
             
-            EndGameClientRpc(new List<Actor>());
+            EndGameClientRpc(-1);
         }
 
         void OnPlayerDeath(PlayerDeathEvent evt)
         {
-            EndGameClientRpc(new List<Actor>());
+            EndGameClientRpc(-1);
         }
     }
 }

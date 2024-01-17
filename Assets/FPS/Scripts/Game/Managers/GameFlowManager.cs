@@ -66,9 +66,9 @@ namespace Unity.FPS.Game
             }
         }
 
-        void OnGameOver(GameOverEvent evt) => EndGame(evt.Winners);
+        void OnGameOver(GameOverEvent evt) => EndGame(evt.WinnerAffiliation);
 
-        void EndGame(List<Actor> winners)
+        void EndGame(int winnerAffiliation)
         {
             // unlocks the cursor before leaving the scene, to be able to click buttons
             Cursor.lockState = CursorLockMode.None;
@@ -77,7 +77,7 @@ namespace Unity.FPS.Game
             // Remember that we need to load the appropriate end scene after a delay
             GameIsEnding = true;
             EndGameFadeCanvasGroup.gameObject.SetActive(true);
-            if (winners.Contains(actor))
+            if (winnerAffiliation == actor.Affiliation)
             {
                 m_SceneToLoad = WinSceneName;
                 m_TimeLoadEndGameScene = Time.time + EndSceneLoadDelay + DelayBeforeFadeToBlack;

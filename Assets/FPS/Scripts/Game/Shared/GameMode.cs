@@ -31,14 +31,14 @@ namespace Unity.FPS.Game
         [ContextMenu("Test end game")]
         public void TestLose()
         {
-            EndGameClientRpc(new List<Actor>());
+            EndGameClientRpc(-1);
         }
 
         [ClientRpc]
-        public void EndGameClientRpc(List<Actor> winners)
+        public void EndGameClientRpc(int winnerAffiliation)
         {
             var evt = Events.GameOverEvent;
-            evt.Winners = winners;
+            evt.WinnerAffiliation = winnerAffiliation;
             EventManager.Broadcast(evt);
         }
     }
