@@ -219,7 +219,7 @@ namespace Unity.FPS.Gameplay
                 else
                 {
                     // land SFX
-                    AudioSource.PlayOneShot(LandSfx);
+                    //AudioSource.PlayOneShot(LandSfx);
                 }
             }
 
@@ -335,9 +335,10 @@ namespace Unity.FPS.Gameplay
                     // jumping
                     if (IsGrounded && m_InputHandler.GetJumpInputDown())
                     {
+                       
                         // force the crouch state to false
-                        if (SetCrouchingState(false, false))
-                        {
+                        //if (SetCrouchingState(false, false))
+                        //{
                             // start by canceling out the vertical component of our velocity
                             CharacterVelocity = new Vector3(CharacterVelocity.x, 0f, CharacterVelocity.z);
 
@@ -345,7 +346,7 @@ namespace Unity.FPS.Gameplay
                             CharacterVelocity += Vector3.up * JumpForce;
 
                             // play sound
-                            AudioSource.PlayOneShot(JumpSfx);
+                            //AudioSource.PlayOneShot(JumpSfx);
 
                             // remember last time we jumped because we need to prevent snapping to ground for a short time
                             m_LastTimeJumped = Time.time;
@@ -354,7 +355,7 @@ namespace Unity.FPS.Gameplay
                             // Force grounding to false
                             IsGrounded = false;
                             m_GroundNormal = Vector3.up;
-                        }
+                        //}
                     }
 
                     // footsteps sound
@@ -363,7 +364,7 @@ namespace Unity.FPS.Gameplay
                     if (m_FootstepDistanceCounter >= 1f / chosenFootstepSfxFrequency)
                     {
                         m_FootstepDistanceCounter = 0f;
-                        AudioSource.PlayOneShot(FootstepSfx);
+                        //AudioSource.PlayOneShot(FootstepSfx);
                     }
 
                     // keep track of distance traveled for footsteps sound
