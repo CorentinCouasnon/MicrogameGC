@@ -17,10 +17,8 @@ namespace FPS.Scripts.Gameplay.GameModes
         List<CaptureAffiliationData> _affiliationsData = new List<CaptureAffiliationData>();
         List<CaptureActorData> _actorsData = new List<CaptureActorData>();
 
-        protected override void Awake()
+        void Awake()
         {
-            base.Awake();
-            
             Invoke(nameof(OnTimeOver), _timerInSeconds);
         }
 
@@ -56,9 +54,7 @@ namespace FPS.Scripts.Gameplay.GameModes
 
         void OnTimeOver()
         {
-            var gameOverEvent = Events.GameOverEvent;
-            gameOverEvent.Win = true;
-            EventManager.Broadcast(gameOverEvent);
+            EndGameClientRpc(new List<Actor>()); // Fix this to see which team has the most points
         }
 
         void OnPlayerEnteredCaptureArea(PlayerEnteredCaptureAreaEvent evt)

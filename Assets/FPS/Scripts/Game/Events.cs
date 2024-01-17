@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Unity.FPS.Game
@@ -37,7 +38,7 @@ namespace Unity.FPS.Game
 
     public class GameOverEvent : GameEvent
     {
-        public bool Win;
+        public List<Actor> Winners;
     }
 
     public class PlayerDeathEvent : GameEvent { }

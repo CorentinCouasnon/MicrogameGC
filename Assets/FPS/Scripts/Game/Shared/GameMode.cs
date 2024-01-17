@@ -1,22 +1,13 @@
-﻿using FPS.Scripts.Game.Managers;
+﻿using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Unity.FPS.Game
 {
-    public class GameMode : MonoBehaviour
+    public class GameMode : NetworkBehaviour
     {
         [SerializeField] Transform _transform;
-        [SerializeField] Mode _mode;
 
-        protected virtual void Awake()
-        {
-            if (GameModeManager.Instance == null)
-                return;
-            
-            if (GameModeManager.Instance.Mode == _mode)
-                SetActiveChildren(true);
-        }
-        
         protected virtual void OnEnable()
         {
             EventManager.AddListener<AllObjectivesCompletedEvent>(OnAllObjectivesCompleted);
@@ -35,6 +26,20 @@ namespace Unity.FPS.Game
             {
                 child.SetActive(active);
             }
+        }
+        
+        [ContextMenu("Test end game")]
+        public void TestLose()
+        {
+            EndGameClientRpc(new List<Actor>());
+        }
+
+        [ClientRpc]
+        public void EndGameClientRpc(List<Actor> winners)
+        {
+            var evt = Events.GameOverEvent;
+            evt.Winners = winners;
+            EventManager.Broadcast(evt);
         }
     }
 }

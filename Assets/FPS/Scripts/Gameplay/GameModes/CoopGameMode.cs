@@ -1,5 +1,8 @@
-﻿using Unity.FPS.Game;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.FPS.Game;
 using Unity.Netcode;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace FPS.Scripts.Gameplay.GameModes
@@ -29,16 +32,12 @@ namespace FPS.Scripts.Gameplay.GameModes
             // reset objectives
             //return;
             
-            var gameOverEvent = Events.GameOverEvent;
-            gameOverEvent.Win = true;
-            EventManager.Broadcast(gameOverEvent);
+            EndGameClientRpc(new List<Actor>());
         }
 
         void OnAllPlayerDead(AllPlayerDeadEvent evt)
         {
-            var gameOverEvent = Events.GameOverEvent;
-            gameOverEvent.Win = false;
-            EventManager.Broadcast(gameOverEvent);
+            EndGameClientRpc(new List<Actor>());
         }
     }
 }

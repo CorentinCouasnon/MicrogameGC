@@ -55,7 +55,9 @@ public class LobbyCreateUI : MonoBehaviour {
         });
         gameModeButton.onClick.AddListener(() => {
             switch (gameMode) {
-                default:
+                case LobbyManager.GameMode.FreeForAll:
+                    gameMode = LobbyManager.GameMode.PVE;
+                    break;
                 case LobbyManager.GameMode.PVE:
                     gameMode = LobbyManager.GameMode.Conquest;
                     break;
@@ -63,7 +65,7 @@ public class LobbyCreateUI : MonoBehaviour {
                     gameMode = LobbyManager.GameMode.TeamDeathMatch;
                     break;
                 case LobbyManager.GameMode.TeamDeathMatch:
-                    gameMode = LobbyManager.GameMode.PVE;
+                    gameMode = LobbyManager.GameMode.FreeForAll;
                     break;
             }
             //Debug.Log(lobbyName+maxPlayers);
