@@ -114,10 +114,10 @@ namespace Unity.FPS.Gameplay
             OnSwitchedToWeapon += OnWeaponSwitched;
 
             // Add starting weapons
-            foreach (var weapon in StartingWeapons)
-            {
-                AddWeapon(weapon);
-            }
+            //foreach (var weapon in StartingWeapons)
+            //{
+            //    AddWeapon(weapon);
+            //}
 
             SwitchWeapon(true);
         }
@@ -434,7 +434,6 @@ namespace Unity.FPS.Gameplay
         // Adds a weapon to our inventory
         public bool AddWeapon(WeaponController weaponPrefab)
         {
-            Debug.Log("salut");
             // if we already hold this weapon type (a weapon coming from the same source prefab), don't add the weapon
             if (HasWeapon(weaponPrefab) != null)
             {
