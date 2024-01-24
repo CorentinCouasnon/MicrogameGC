@@ -8,6 +8,7 @@ namespace Unity.FPS.Gameplay
 {
     public class ProjectileStandard : ProjectileBase
     {
+        bool DoOnce = true;
         [Header("General")] [Tooltip("Radius of this projectile's collision detection")]
         public float Radius = 0.01f;
 
@@ -239,12 +240,17 @@ namespace Unity.FPS.Gameplay
 
                 if (damageable)
                 {
+                    if (DoOnce)
+                    {
+                        DoOnce = false;
+                        damageable.InflictDamageClientRpc(Damage);
+                    }
                     ////Don't touch the player
                     //if (collider.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
                     //{
                     //    if (networkObject.IsOwner) return;
                     //}
-                    damageable.InflictDamageClientRpc(Damage);
+                  
                 }
             }
 

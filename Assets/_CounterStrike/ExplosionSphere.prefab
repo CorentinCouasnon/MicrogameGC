@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -52,7 +52,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 916827523163623461}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -119,12 +119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de99b30e1e73fd14e98cc5371da25d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Radius: 3
+  Radius: 5
   Root: {fileID: 685469996188135900}
   Tip: {fileID: 685469996188135900}
-  MaxLifeTime: 1
+  MaxLifeTime: 5
   ImpactVfx: {fileID: 0}
-  ImpactVfxLifetime: 1
+  ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
   ImpactSfxClip: {fileID: 0}
   HittableLayers:
@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0244d6b9e98532469c7be0732490a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AreaOfEffectDistance: 3
+  AreaOfEffectDistance: 5
   DamageRatioOverDistance:
     serializedVersion: 2
     m_Curve:

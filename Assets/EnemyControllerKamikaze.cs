@@ -387,6 +387,7 @@ namespace Unity.FPS.AI
             // spawn a particle system when dying
             var vfx = Instantiate(DeathVfx, transform.position, Quaternion.identity);
             GameObject expl = Instantiate(ExplosionSphereprefab, transform.position, Quaternion.identity);
+            //Debug.Break();
             expl.GetComponent<NetworkObject>().Spawn();
             expl.transform.parent = null;
            
@@ -522,11 +523,8 @@ namespace Unity.FPS.AI
         
         IEnumerator Explosion()
         {
-           
-
             if (DoOnce)
-            {
-                
+            {         
                 //Debug.Log("on atteint la boucle");
                 for (float i = 0f; i<1.0f; i+=0.25f)
                 {
