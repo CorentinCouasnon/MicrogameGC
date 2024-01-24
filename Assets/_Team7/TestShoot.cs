@@ -1,4 +1,5 @@
 using Unity.FPS.Game;
+using Unity.FPS.Gameplay;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,16 +18,19 @@ public class TestShoot : NetworkBehaviour
     public float timerShootMax = 1;
     float timerShoot = 0;
 
-
+    Actor actor;
 
     public override void OnNetworkSpawn()
     {
         audioSource = GetComponent<AudioSource>();
+        actor = GetComponent<Actor>();
     }
 
     void Update()
     {
         if (!IsOwner) return;
+
+        if (actor.isDead) return;
 
         timerShoot -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0) && timerShoot <= 0)

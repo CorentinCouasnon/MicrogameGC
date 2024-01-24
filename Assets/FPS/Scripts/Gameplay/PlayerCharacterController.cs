@@ -137,6 +137,8 @@ namespace Unity.FPS.Gameplay
         const float k_JumpGroundingPreventionTime = 0.2f;
         const float k_GroundCheckDistanceInAir = 0.07f;
 
+        public GameObject deadObject;
+
         void Awake()
         {
             ActorsManager actorsManager = FindObjectOfType<ActorsManager>();
@@ -147,6 +149,7 @@ namespace Unity.FPS.Gameplay
         public override void OnNetworkSpawn()
         {
             avatar.SetActive(false);
+            deadObject.SetActive(false);
             if (!IsOwner)
             {
                 PlayerCamera.enabled = false;
@@ -189,6 +192,8 @@ namespace Unity.FPS.Gameplay
         void Update()
         {
             if (!IsOwner) return;
+            Debug.Log(m_Actor);
+            if (m_Actor.isDead) return;
 
             // check for Y kill
             if (!IsDead && transform.position.y < KillHeight)
@@ -242,6 +247,19 @@ namespace Unity.FPS.Gameplay
             m_WeaponsManager.SwitchToWeaponIndex(-1, true);
 
             EventManager.Broadcast(Events.PlayerDeathEvent);
+
+            m_Actor.isDead = true;
+            deadObject.SetActive(true);
+            avatar.transform.parent.gameObject.SetActive(false);
+            m_Controller.enabled = false;
+        }
+
+        public void Respawn()
+        {
+            deadObject.SetActive(false);
+            avatar.transform.parent.gameObject.SetActive(true);
+            m_Controller.enabled = true;
+            m_Actor.isDead = false;
         }
 
         void GroundCheck()

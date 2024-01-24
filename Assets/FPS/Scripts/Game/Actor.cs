@@ -15,6 +15,8 @@ namespace Unity.FPS.Game
 
         ActorsManager m_ActorsManager;
 
+        public bool isDead = false;
+
         public override void OnNetworkSpawn()
         {
             m_ActorsManager = GameObject.FindObjectOfType<ActorsManager>();
