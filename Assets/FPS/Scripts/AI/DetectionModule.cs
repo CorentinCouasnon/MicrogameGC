@@ -51,13 +51,19 @@ namespace Unity.FPS.AI
                 KnownDetectedTarget = null;
             }
 
+            //Stop tracking dead ennemy
+            if (KnownDetectedTarget && KnownDetectedTarget.transform.parent.GetComponent<Actor>().isDead)
+            {
+                KnownDetectedTarget = null;
+            }
+
             // Find the closest visible hostile actor
             float sqrDetectionRange = DetectionRange * DetectionRange;
             IsSeeingTarget = false;
             float closestSqrDistance = Mathf.Infinity;
             foreach (Actor otherActor in m_ActorsManager.Actors)
             {
-                if (otherActor.Affiliation != actor.Affiliation)
+                if (otherActor.Affiliation != actor.Affiliation && !otherActor.isDead)
                 {
                     float sqrDistance = (otherActor.transform.position - DetectionSourcePoint.position).sqrMagnitude;
                     if (sqrDistance < sqrDetectionRange && sqrDistance < closestSqrDistance)

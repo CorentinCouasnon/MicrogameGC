@@ -26,7 +26,6 @@ namespace Unity.FPS.Game
         [ClientRpc]
         public void InflictDamageClientRpc(float damage)
         {
-            Debug.Log("eoh");
             if (Health)
             {
                 var totalDamage = damage;
