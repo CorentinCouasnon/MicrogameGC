@@ -244,7 +244,7 @@ namespace Unity.FPS.Gameplay
                     //{
                     //    if (networkObject.IsOwner) return;
                     //}
-                    damageable.InflictDamage(Damage, false, m_ProjectileBase.Owner);
+                    damageable.InflictDamageClientRpc(Damage);
                 }
             }
 

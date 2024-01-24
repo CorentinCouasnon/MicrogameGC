@@ -7,62 +7,61 @@ public class TestShoot : NetworkBehaviour
     [SerializeField] GameObject objTest;
     public ProjectileBase ProjectilePrefab;
 
-    GameObject cameraGO;
-    GameObject weapon;
+    [SerializeField] GameObject cameraGO;
+    [SerializeField] GameObject weapon;
+    [SerializeField] GameObject weaponShootPoint;
 
-    [SerializeField] float forceShoot = 200;
+    AudioSource audioSource;
+    public AudioClip shootSfx;
+
+    public float timerShootMax = 1;
+    float timerShoot = 0;
+
+
 
     public override void OnNetworkSpawn()
     {
-        //if (!IsOwner) return;
-
-        cameraGO = transform.Find("Main Camera").gameObject;
-        weapon = cameraGO.transform.Find("Weapon_Blaster").gameObject;
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        timerShoot -= Time.deltaTime;
+        if (Input.GetMouseButtonDown(0) && timerShoot <= 0)
         {
-            SpawnBulletServerRpc();
+            playSoundServerRpc();
+            shootServerRpc();
         }
+        weapon.transform.forward = cameraGO.transform.forward;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void SpawnBulletServerRpc(ServerRpcParams serverRpcParams = default)
+    void shootServerRpc(ServerRpcParams serverRpcParams = default)
     {
-        // TEST  //////
-        Debug.Log("salut");
-        Vector3 newPosTest = new Vector3(weapon.gameObject.transform.position.x, weapon.gameObject.transform.position.y, weapon.gameObject.transform.position.z);
-        GameObject newProjectileTest = Instantiate(objTest
-                                                    , newPosTest
-                                                   , cameraGO.transform.rotation);
+        Vector3 newPosTest = new Vector3(weaponShootPoint.transform.position.x, weaponShootPoint.transform.position.y, weaponShootPoint.transform.position.z);
+        GameObject newProjectileTest = Instantiate(objTest, newPosTest, weapon.transform.rotation);
         newProjectileTest.GetComponent<NetworkObject>().Spawn();
-        newProjectileTest.GetComponent<Rigidbody>().AddForce(forceShoot * cameraGO.transform.forward);
-
-        // TIR FPS  //////
-        //ulong clientId = serverRpcParams.Receive.SenderClientId;
-        //if (NetworkManager.ConnectedClients.ContainsKey(clientId))
-        //{
-        //    var client = NetworkManager.ConnectedClients[clientId];
-
-        //    Vector3 newPos = new Vector3(weaponController.gameObject.transform.position.x, weaponController.gameObject.transform.position.y, weaponController.gameObject.transform.position.z);
-        //    ProjectileBase newProjectile = Instantiate(ProjectilePrefab
-        //                                                , newPos
-        //                                                , cameraGO.transform.rotation);
-        //    NetworkObject networkProj = newProjectile.GetComponent<NetworkObject>();
-        //    networkProj.Spawn();
-        //    newProjectile.Shoot(weaponController);
-        //    SpawnBulletClientRpc(networkProj.NetworkObjectId);
-        //}
+        shootClientRpc();
     }
 
     [ClientRpc]
-    void SpawnBulletClientRpc(ulong id)
+    void shootClientRpc()
     {
-        NetworkObject netObj = NetworkManager.Singleton.SpawnManager.SpawnedObjects[id];
+        timerShoot = timerShootMax;
+
+    }
+
+    [ServerRpc]
+    void playSoundServerRpc()
+    {
+        playSoundClientRpc();
+    }
+
+    [ClientRpc]
+    void playSoundClientRpc()
+    {
+        audioSource.PlayOneShot(shootSfx);
     }
 }
