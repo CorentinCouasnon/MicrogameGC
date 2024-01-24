@@ -14,6 +14,9 @@ public class TestShoot : NetworkBehaviour
     AudioSource audioSource;
     public AudioClip shootSfx;
 
+    public float timerShootMax = 1;
+    float timerShoot = 0;
+
 
 
     public override void OnNetworkSpawn()
@@ -25,20 +28,29 @@ public class TestShoot : NetworkBehaviour
     {
         if (!IsOwner) return;
 
-        if (Input.GetKeyDown(KeyCode.LeftControl))
+        timerShoot -= Time.deltaTime;
+        if (Input.GetMouseButtonDown(0) && timerShoot <= 0)
         {
             playSoundServerRpc();
-            SpawnBulletServerRpc();
+            shootServerRpc();
         }
         weapon.transform.forward = cameraGO.transform.forward;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void SpawnBulletServerRpc(ServerRpcParams serverRpcParams = default)
+    void shootServerRpc(ServerRpcParams serverRpcParams = default)
     {
         Vector3 newPosTest = new Vector3(weaponShootPoint.transform.position.x, weaponShootPoint.transform.position.y, weaponShootPoint.transform.position.z);
         GameObject newProjectileTest = Instantiate(objTest, newPosTest, weapon.transform.rotation);
         newProjectileTest.GetComponent<NetworkObject>().Spawn();
+        shootClientRpc();
+    }
+
+    [ClientRpc]
+    void shootClientRpc()
+    {
+        timerShoot = timerShootMax;
+
     }
 
     [ServerRpc]
