@@ -242,8 +242,10 @@ namespace Unity.FPS.Gameplay
                 {
                     if (DoOnce)
                     {
+                        Debug.Log(damageable.gameObject);
                         DoOnce = false;
                         damageable.InflictDamageClientRpc(Damage);
+                       // Debug.Break();
                     }
                     ////Don't touch the player
                     //if (collider.TryGetComponent<NetworkObject>(out NetworkObject networkObject))
