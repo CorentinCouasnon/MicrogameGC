@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Unity.FPS.Game;
 using UnityEngine;
 
@@ -16,14 +17,32 @@ namespace FPS.Scripts.Gameplay.GameModes
 
         List<CaptureAffiliationData> _affiliationsData = new List<CaptureAffiliationData>();
         List<CaptureActorData> _actorsData = new List<CaptureActorData>();
+        
+        public Action<float, List<CaptureAffiliationData>> StepCompleted { get; set; }
 
-        void Awake()
+        public override void OnNetworkSpawn()
         {
-            Invoke(nameof(OnTimeOver), _timerInSeconds);
+            if (!IsHost)
+                return;
+
+            EventManager.AddListener<PlayerEnteredCaptureAreaEvent>(OnPlayerEnteredCaptureArea);
+            EventManager.AddListener<PlayerCaptureAreaStayEvent>(OnPlayerCaptureAreaStay);
+            EventManager.AddListener<PlayerExitedCaptureAreaEvent>(OnPlayerExitedCaptureArea);
+
+            var timer = _timerInSeconds;
+            DOTween.To(() => timer, x => timer = x, 0f, _timerInSeconds)
+                .OnUpdate(() => StepCompleted?.Invoke(timer, _affiliationsData))
+                .SetEase(Ease.Linear)
+                .OnComplete(OnTimeOver);
+
+            StartCoroutine(StartComputation());
         }
 
-        IEnumerator Start()
+        IEnumerator StartComputation()
         {
+            if (!IsHost)
+                yield break;
+            
             var waitForFixedUpdate = new WaitForFixedUpdate();
 
             while (true)
@@ -34,18 +53,9 @@ namespace FPS.Scripts.Gameplay.GameModes
             }
         }
 
-        protected override void OnEnable()
+        public override void OnDestroy()
         {
-            base.OnEnable();
-            
-            EventManager.AddListener<PlayerEnteredCaptureAreaEvent>(OnPlayerEnteredCaptureArea);
-            EventManager.AddListener<PlayerCaptureAreaStayEvent>(OnPlayerCaptureAreaStay);
-            EventManager.AddListener<PlayerExitedCaptureAreaEvent>(OnPlayerExitedCaptureArea);
-        }
-
-        protected override void OnDisable()
-        {
-            base.OnDisable();
+            base.OnDestroy();
             
             EventManager.RemoveListener<PlayerEnteredCaptureAreaEvent>(OnPlayerEnteredCaptureArea);
             EventManager.RemoveListener<PlayerCaptureAreaStayEvent>(OnPlayerCaptureAreaStay);
@@ -54,6 +64,12 @@ namespace FPS.Scripts.Gameplay.GameModes
 
         void OnTimeOver()
         {
+            if (_affiliationsData.Count == 0)
+            {
+                EndGameClientRpc(-1);
+                return;
+            }
+            
             var max = _affiliationsData.Max(affiliation => affiliation.Points);
             var winner = _affiliationsData.First(affiliation => affiliation.Points == max);
             EndGameClientRpc(winner.Affiliation);
@@ -70,9 +86,7 @@ namespace FPS.Scripts.Gameplay.GameModes
             {
                 _affiliationsData.Add(new CaptureAffiliationData { Affiliation = evt.Actor.Affiliation });
             }
-
-            Debug.Log(_affiliationsData.Count);
-
+            
             var actorData = GetActorData(evt.Actor);
             var affiliationData = GetAffilitationDataFromId(evt.Actor.Affiliation);
 
@@ -135,8 +149,8 @@ namespace FPS.Scripts.Gameplay.GameModes
         {
             return _actorsData.FirstOrDefault(actorData => actorData.Actor == actor);
         }
-        
-        class CaptureAffiliationData
+
+        public class CaptureAffiliationData
         {
             public int Affiliation { get; set; }
             public List<Actor> Actors { get; set; } = new List<Actor>();
