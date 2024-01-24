@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace Unity.FPS.AI
 {
-    [RequireComponent(typeof(EnemyController))]
-    public class EnemyMobile : MonoBehaviour
+    [RequireComponent(typeof(EnemyControllerKamikaze))]
+    public class EnemyMobileKamikaze : MonoBehaviour
     {
         public enum AIState
         {
@@ -29,7 +29,7 @@ namespace Unity.FPS.AI
         public MinMaxFloat PitchDistortionMovementSpeed;
 
         public AIState AiState { get; private set; }
-        EnemyController m_EnemyController;
+        EnemyControllerKamikaze m_EnemyController;
         AudioSource m_AudioSource;
 
         const string k_AnimMoveSpeedParameter = "MoveSpeed";
@@ -39,8 +39,8 @@ namespace Unity.FPS.AI
 
         void Start()
         {
-            m_EnemyController = GetComponent<EnemyController>();
-            DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(m_EnemyController, this,
+            m_EnemyController = GetComponent<EnemyControllerKamikaze>();
+            DebugUtility.HandleErrorIfNullGetComponent<EnemyControllerKamikaze, EnemyMobile>(m_EnemyController, this,
                 gameObject);
 
             m_EnemyController.onAttack += OnAttack;

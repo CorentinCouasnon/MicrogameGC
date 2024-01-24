@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.FPS.Game;
 using Unity.Netcode;
@@ -10,9 +11,10 @@ namespace Unity.FPS.AI
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
     public class EnemyControllerKamikaze : NetworkBehaviour
     {
+        
         public GameObject ExplosionSphereprefab;
         public GameObject Joueurrandomtest;
-
+        bool DoOnce = true;
         [System.Serializable]
         public struct RendererIndexData
         {
@@ -213,6 +215,7 @@ namespace Unity.FPS.AI
                 m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock,
                     m_EyeRendererData.MaterialIndex);
             }
+           
         }
 
         void Update()
@@ -382,12 +385,12 @@ namespace Unity.FPS.AI
         void OnDie()
         {
             // spawn a particle system when dying
-            var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
-            GameObject expl = Instantiate(ExplosionSphereprefab, transform.position, Quaternion.identity,transform);
-            if (expl)
-            {
-                expl.transform.SetParent(null);
-            }
+            var vfx = Instantiate(DeathVfx, transform.position, Quaternion.identity);
+            GameObject expl = Instantiate(ExplosionSphereprefab, transform.position, Quaternion.identity);
+            expl.GetComponent<NetworkObject>().Spawn();
+            expl.transform.parent = null;
+           
+           
             Destroy(vfx, 5f);
 
             // tells the game flow manager to handle the enemy destuction
@@ -400,8 +403,8 @@ namespace Unity.FPS.AI
             }
 
             GetComponent<NetworkObject>().Despawn();
-            // this will call the OnDestroy function
             Destroy(gameObject, DeathDuration);
+            // this will call the OnDestroy function
 
         }
 
@@ -435,7 +438,7 @@ namespace Unity.FPS.AI
 
         public bool TryAtack(Vector3 enemyPosition)
         {
-            if (Vector3.Distance(enemyPosition,transform.position)<= 0.5)
+            if (Vector3.Distance(enemyPosition,transform.position)<= 1)
             {
                 OnDie();
                 return true;
@@ -497,6 +500,54 @@ namespace Unity.FPS.AI
             {
                 m_LastTimeWeaponSwapped = Mathf.NegativeInfinity;
             }
+        }
+       
+        private void OnTriggerStay(Collider other)
+        {
+            Debug.Log(other.gameObject.tag);
+            if (other.gameObject.tag == "Player")
+            {
+                StartCoroutine(Explosion());
+                DoOnce = false;
+            }
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag == "Player")
+            {
+                DoOnce = true;
+                StopAllCoroutines();
+            }
+        }
+        
+        IEnumerator Explosion()
+        {
+           
+
+            if (DoOnce)
+            {
+                
+                //Debug.Log("on atteint la boucle");
+                for (float i = 0f; i<1.0f; i+=0.25f)
+                {
+                    Color Nc = BodyMaterial.color;
+                    Nc.r = Mathf.Lerp(0f, 1.0f, i);
+                    if (m_BodyRenderers[0].Renderer!=null)
+                    {
+                        m_BodyFlashMaterialPropertyBlock.SetColor("_EmissionColor", Nc);
+                        m_BodyRenderers[0].Renderer.SetPropertyBlock(m_BodyFlashMaterialPropertyBlock, m_BodyRenderers[0].MaterialIndex);
+                    }
+                    if (m_EyeRendererData.Renderer != null)
+                    {
+                        m_EyeColorMaterialPropertyBlock.SetColor("_EmissionColor", Nc);
+                        m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock,
+                            m_EyeRendererData.MaterialIndex);
+                    }
+                    yield return new WaitForSeconds(0.3f);
+                }
+                OnDie();
+            }
+            yield return null;
         }
     }
 }
