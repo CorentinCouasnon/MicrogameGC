@@ -9,7 +9,7 @@ public class EditPlayerName : MonoBehaviour {
 
 
     public static EditPlayerName Instance { get; private set; }
-
+    bool DoOnce = true;
 
     [SerializeField] private TextMeshProUGUI playerNameText;
 
@@ -31,10 +31,14 @@ public class EditPlayerName : MonoBehaviour {
         LobbyManager.Instance.UpdatePlayerName(playerName);
     }
     public string GetPlayerName() {
-         Debug.Log(playerName);
-
+         Debug.Log(playerName.Length);
+        if (DoOnce)
+        {
+            playerName = playerName.Substring(0, playerName.Length - 1);
+            DoOnce = false;
+        }
         //return playerName;
-        playerName = playerName.Substring(0, playerName.Length - 1);
+       
         return playerName;
     }
 

@@ -46,8 +46,8 @@ public class LobbyManager : MonoBehaviour {
     public enum GameMode {
         PVE,
         Conquest,
-        TeamDeathMatch,
-        FreeForAll,
+       // TeamDeathMatch,
+       // FreeForAll,
     }
 
     public enum PlayerCharacter {
@@ -60,8 +60,8 @@ public class LobbyManager : MonoBehaviour {
     {
         { GameMode.PVE, "MainScene" },
         { GameMode.Conquest, "Corentin_CaptureGameMode" },
-        { GameMode.TeamDeathMatch, "MainScene" },
-        { GameMode.FreeForAll, "MainScene" },
+       // { GameMode.TeamDeathMatch, "MainScene" },
+       // { GameMode.FreeForAll, "MainScene" },
     };
 
     private float heartbeatTimer;
@@ -190,14 +190,14 @@ public class LobbyManager : MonoBehaviour {
                     gameMode = GameMode.Conquest;
                     break;
                 case GameMode.Conquest:
-                    gameMode = GameMode.TeamDeathMatch;
-                    break;
-                case GameMode.TeamDeathMatch:
-                    gameMode = GameMode.FreeForAll;
-                    break;
-                case GameMode.FreeForAll:
                     gameMode = GameMode.PVE;
                     break;
+                //case GameMode.TeamDeathMatch:
+                //    gameMode = GameMode.FreeForAll;
+                //    break;
+                //case GameMode.FreeForAll:
+                //    gameMode = GameMode.PVE;
+                //    break;
             }
 
             UpdateLobbyGameMode(gameMode);
